@@ -25,55 +25,42 @@ class Map
     left = {x: x-1, y: y, open: false, food: false}
     right = {x: x+1, y: y, open: false, food: false}
 
-    puts "Checking #{x},#{y} for open moves"
     # Begin down checks
-    puts "Down is #{down[:x]},#{down[:y]}"
     if is_coordinate_open(down[:x], down[:y])
-      puts "Down #{down[:x]},#{down[:y]} is not open"
       down[:open] = true
     end
 
     if is_coordinate_food(down[:x], down[:y])
-      puts "Down #{down[:x]},#{down[:y]} is not food"
       down[:food] = true
     end
     # End down checks
     
     # Begin up checks
-    puts "Up is #{up[:x]},#{up[:y]}"
     if is_coordinate_open(up[:x], up[:y])
-      puts "Up #{up[:x]},#{up[:y]} is not open"
       up[:open] = true
     end
 
     if is_coordinate_food(up[:x], up[:y])
-      puts "Up #{up[:x]},#{up[:y]} is not food"
       up[:food] = true
     end
     # End up checks
     
     # Begin left checks
-    puts "Left is #{left[:x]},#{left[:y]}"
     if is_coordinate_open(left[:x], left[:y])
-      puts "Left #{left[:x]},#{left[:y]} is not open"
       left[:open] = true
     end
 
     if is_coordinate_food(left[:x], left[:y])
-      puts "Left #{left[:x]},#{left[:y]} is not food"
       left[:food] = true
     end
     # End left checks
 
     # Begin right checks
-    puts "Right is #{right[:x]},#{right[:y]}"
     if is_coordinate_open(right[:x], right[:y])
-      puts "Right #{right[:x]},#{right[:y]} is not open"
       right[:open] = true
     end
 
     if is_coordinate_food(right[:x], right[:y])
-      puts "Right #{right[:x]},#{right[:y]} is not food"
       right[:food] = true
     end
     # End right checks
@@ -90,7 +77,6 @@ class Map
 
   def is_coordinate_block(x,y, blocks=[])
     y = (@map[0].count - y) - 1
-    puts "Checking array at #{x}, #{y}"
     if x < 0
       return false
     end
@@ -106,7 +92,6 @@ class Map
     if y > @map[0].count - 1
       return false
     end
-    puts "Checking array at #{x}, #{y} got #{@map.reverse[y][x]}"
 
     if blocks.include?(@map.reverse[y][x])
       return true

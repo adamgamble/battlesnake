@@ -27,9 +27,23 @@ class GameObject
     puts "Got open #{open.map(&:first).map(&:to_s).join(",")}"
     puts "Got food #{food.map(&:first).map(&:to_s).join(",")}"
     if food.any?
-      move = food.keys.sample
+      food.each do |arrow, space|
+        next_spaces = @map.open_spaces_from_coordinates(space[:x], space[:y])
+        space[:next_move_count] = next_spaces.keys.count
+      end
+      possible_food = food.map {|arrow, space| [arrow, space[:next_move_count]]}
+      possible_food.sort! {|a,b| b.last <=> a.last}
+      puts "Possible food: #{possible_food}"
+      move = possible_food.first.first
     else
-      move = open.keys.sample
+      open.each do |arrow, space|
+        next_spaces = @map.open_spaces_from_coordinates(space[:x], space[:y])
+        space[:next_move_count] = next_spaces.keys.count
+      end
+      possible_open = open.map {|arrow, space| [arrow, space[:next_move_count]]}
+      possible_open.sort! {|a,b| b.last <=> a.last}
+      puts "Possible open: #{possible_food}"
+      move = possible_open.first.first
     end
     puts "Moving #{move.to_s}"
     move
