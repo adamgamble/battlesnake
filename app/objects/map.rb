@@ -17,45 +17,78 @@ class Map
 
   # Determine if up, down, left, or right is open from a given space
   def open_spaces_from_coordinates(x,y)
-    open_spaces = [:up, :down, :left, :right]
+    open_spaces = []
+    food_spaces = []
+
+    down = {x: x, y: y-1, open: false, food: false}
+    up = {x: x, y: y+1, open: false, food: false}
+    left = {x: x-1, y: y, open: false, food: false}
+    right = {x: x+1, y: y, open: false, food: false}
 
     puts "Checking #{x},#{y} for open moves"
     # Begin down checks
-    puts "Down is #{x},#{y-1}"
-    if !is_coordinate_open(x, y - 1)
-      puts "Down #{x},#{y-1} is not open"
-      open_spaces.delete(:down)
+    puts "Down is #{down[:x]},#{down[:y]}"
+    if is_coordinate_open(down[:x], down[:y])
+      puts "Down #{down[:x]},#{down[:y]} is not open"
+      down[:open] = true
     end
-    # End up checks
-    
-    # Begin up checks
-    puts "Up is #{x},#{y+1}"
-    if !is_coordinate_open(x, y + 1)
-      puts "Up #{x},#{y+1} is not open"
-      open_spaces.delete(:up)
+
+    if is_coordinate_food(down[:x], down[:y])
+      puts "Down #{down[:x]},#{down[:y]} is not food"
+      down[:food] = true
     end
     # End down checks
     
+    # Begin up checks
+    puts "Up is #{up[:x]},#{up[:y]}"
+    if is_coordinate_open(up[:x], up[:y])
+      puts "Up #{up[:x]},#{up[:y]} is not open"
+      up[:open] = true
+    end
+
+    if is_coordinate_food(up[:x], up[:y])
+      puts "Up #{up[:x]},#{up[:y]} is not food"
+      up[:food] = true
+    end
+    # End up checks
+    
     # Begin left checks
-    puts "Left is #{x-1},#{y}"
-    if !is_coordinate_open(x - 1, y)
-      puts "Left #{x-1},#{y} is not open"
-      open_spaces.delete(:left)
+    puts "Left is #{left[:x]},#{left[:y]}"
+    if is_coordinate_open(left[:x], left[:y])
+      puts "Left #{left[:x]},#{left[:y]} is not open"
+      left[:open] = true
+    end
+
+    if is_coordinate_food(left[:x], left[:y])
+      puts "Left #{left[:x]},#{left[:y]} is not food"
+      left[:food] = true
     end
     # End left checks
 
     # Begin right checks
-    puts "Right is #{x+1},#{y}"
-    if !is_coordinate_open(x + 1, y)
-      puts "Right #{x+1},#{y} is not open"
-      open_spaces.delete(:right)
+    puts "Right is #{right[:x]},#{right[:y]}"
+    if is_coordinate_open(right[:x], right[:y])
+      puts "Right #{right[:x]},#{right[:y]} is not open"
+      right[:open] = true
+    end
+
+    if is_coordinate_food(right[:x], right[:y])
+      puts "Right #{right[:x]},#{right[:y]} is not food"
+      right[:food] = true
     end
     # End right checks
-    
-    open_spaces
+    {down: down, right: right, up: up, left: left}
   end
 
   def is_coordinate_open(x,y)
+    is_coordinate_block(x,y,OPEN_SPACES)
+  end
+
+  def is_coordinate_food(x,y)
+    is_coordinate_block(x,y,[""])
+  end
+
+  def is_coordinate_block(x,y, blocks=[])
     y = (@map[0].count - y) - 1
     puts "Checking array at #{x}, #{y}"
     if x < 0
@@ -75,7 +108,7 @@ class Map
     end
     puts "Checking array at #{x}, #{y} got #{@map.reverse[y][x]}"
 
-    if OPEN_SPACES.include?(@map.reverse[y][x])
+    if blocks.include?(@map.reverse[y][x])
       return true
     else
       return false

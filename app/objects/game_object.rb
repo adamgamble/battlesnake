@@ -21,9 +21,16 @@ class GameObject
   end
 
   def next_move
-    possible_moves = @map.open_spaces_from_coordinates(@me.head[:x], @me.head[:y])
-    puts "Got #{possible_moves.map(&:to_s).join(",")}"
-    move = possible_moves.sample.to_s
+    spaces = @map.open_spaces_from_coordinates(@me.head[:x], @me.head[:y])
+    food = spaces.select { |arrow, space| space[:food] }
+    open = spaces.select { |arrow, space| space[:open] }
+    puts "Got open #{open.map(&:first).map(&:to_s).join(",")}"
+    puts "Got food #{food.map(&:first).map(&:to_s).join(",")}"
+    if food.any?
+      move = food.keys.sample
+    else
+      move = open.keys.sample
+    end
     puts "Moving #{move.to_s}"
     move
   end
