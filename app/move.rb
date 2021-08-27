@@ -25,5 +25,38 @@ def build_map(board)
     end
     map_array << x_array
   end
+  map_array = add_snakes_to_map(board,map_array)
+  print_map(map_array)
   map_array
+end
+
+def get_snakes(board)
+  my_id = board[:you][:id]
+  snakes = board[:board][:snakes]
+end
+
+def add_snakes_to_map(board, map_array)
+  snakes = get_snakes(board)
+  snakes.each do |snake|
+    snake[:body].each do |coordinates|
+      map_array[coordinates[:x]][coordinates[:y]] = "|"
+    end
+    map_array[snake[:head][:x]][snake[:head][:y]] = "H"
+  end
+  map_array
+end
+
+def print_map(map_array)
+  str = ""
+  map_array.each do |row|
+    row.each do |column|
+      if column == []
+        str << "."
+      else
+        str << column[0]
+      end
+    end
+    str << "\n"
+  end
+  puts str
 end
