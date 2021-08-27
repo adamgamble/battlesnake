@@ -6,6 +6,7 @@ require './app/move'
 require './app/objects/game_object'
 require './app/objects/map'
 require './app/objects/player'
+require 'byebug'
 
 use Rack::PostBodyContentTypeParser
 # This function is called when you register your Battlesnake on play.battlesnake.com

@@ -4,14 +4,7 @@
 def move(board)
   # Choose a random direction to move in
   game_object = GameObject.new(board)
-  puts "ME: #{game_object.me.inspect}"
-  move = find_open_move(game_object)
-  puts "MOVE: " + move
+  move = game_object.next_move
   { "move": move }
-end
-
-def find_open_move(game_object)
-  possible_moves = ["up", "down", "left", "right"]
-  move = possible_moves.sample
 end
 
