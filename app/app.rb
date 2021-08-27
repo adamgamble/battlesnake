@@ -6,6 +6,7 @@ require './app/move'
 require './app/objects/game_object'
 require './app/objects/map'
 require './app/objects/player'
+require './app/objects/move_planner'
 require 'byebug'
 
 use Rack::PostBodyContentTypeParser

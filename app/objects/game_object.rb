@@ -8,6 +8,7 @@ class GameObject
     @me = @players.detect {|player| player.me }
     @opponents = @players
     @opponents.delete(@me)
+    @move_planner = MovePlanner.new(self)
     puts "----------------------------"
     puts "My head: #{@me.head[:x]},#{@me.head[:y]}"
     @opponents.each do |opponent|
@@ -21,33 +22,6 @@ class GameObject
   end
 
   def next_move
-    spaces = @map.open_spaces_from_coordinates(@me.head[:x], @me.head[:y])
-    food = spaces.select { |arrow, space| space[:food] }
-    open = spaces.select { |arrow, space| space[:open] }
-    puts "Got open #{open.map(&:first).map(&:to_s).join(",")}"
-    puts "Got food #{food.map(&:first).map(&:to_s).join(",")}"
-    good_moves = []
-    if food.any?
-      food.each do |arrow, space|
-        next_spaces = @map.open_spaces_from_coordinates(space[:x], space[:y])
-        space[:next_move_count] = next_spaces.keys.count
-      end
-      possible_food = food.map {|arrow, space| [arrow, space[:next_move_count]]}
-      possible_food.sort! {|a,b| b.last <=> a.last}
-      puts "Possible food: #{possible_food}"
-      good_moves << possible_food.first
-    else
-      open.each do |arrow, space|
-        next_spaces = @map.open_spaces_from_coordinates(space[:x], space[:y])
-        space[:next_move_count] = next_spaces.keys.count
-      end
-      possible_open = open.map {|arrow, space| [arrow, space[:next_move_count]]}
-      possible_open.sort! {|a,b| b.last <=> a.last}
-      puts "Possible open: #{possible_food}"
-      good_moves << possible_open.first
-    end
-    move = good_moves.uniq.sample.first
-    puts "Moving #{move.to_s}"
-    move
+    @move_planner.next_move
   end
 end
