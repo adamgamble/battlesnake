@@ -46,7 +46,7 @@ class GameObject
       puts "Possible open: #{possible_food}"
       good_moves << possible_open.first
     end
-    move = good_moves.sample.first
+    move = good_moves.uniq.sample.first
     puts "Moving #{move.to_s}"
     move
   end
