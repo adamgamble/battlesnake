@@ -3,6 +3,9 @@ require 'rack/contrib'
 require 'sinatra'
 require './app/util'
 require './app/move'
+require './app/objects/game_object'
+require './app/objects/map'
+require './app/objects/player'
 
 use Rack::PostBodyContentTypeParser
 # This function is called when you register your Battlesnake on play.battlesnake.com
