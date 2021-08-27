@@ -34,6 +34,7 @@ end
 # TODO: Use the information in rack.request.form_hash to decide your next move.
 post '/move' do
   request = underscore(env['rack.request.form_hash'])
+  puts request.inspect
 
   # Implement move logic in app/move.rb
   response = move(request)
